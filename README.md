@@ -15,8 +15,3 @@ Currently, we are using text chat to store these. The information is hard to fol
 ## How do I solve this problem?
 
 Using the application, the user will enter their book title, word count, and a rating. This will be stored on the home page, and a calculation will take the total word counts of all registered books and generate a number of points they have accumulated.
-
-Links
-Link to my GitHub repository:
-Link to my project website (Hugo):
-Progress Page: make a link
