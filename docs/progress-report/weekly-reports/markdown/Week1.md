@@ -2,7 +2,7 @@
 marp: true
 size: 4:3
 paginate: true
-title: HW2 – Grading Rubric (Team Project)
+title: Week 1 Progress Report
 ---
 
 
@@ -12,7 +12,7 @@ title: HW2 – Grading Rubric (Team Project)
 
 ---
 
-## Sprint 1 Goals
+## Sprint 1 Goals - Week 1
 1. Produce Scaffold for Project
 2. Begin Calculations for Book tracking
 3. Design Basic UI
