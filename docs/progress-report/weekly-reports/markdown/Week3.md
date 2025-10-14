@@ -23,9 +23,3 @@ Completed Goals: 2
 Burndown Rate: 100%
 
 ---
-
-
-**Issues:**  
-- Database took longer than expected to setup
-
----
