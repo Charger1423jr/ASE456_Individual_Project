@@ -86,8 +86,8 @@ Install dependencies for the server:
 - Make a MongoDB Cluster and link the download link into the database from server.js
 
 Start the server:
-Ensure you cd ./bookeep_backend
-node server.js
+- Ensure you cd ./bookeep_backend
+- node server.js
 
 ---
 
