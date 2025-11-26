@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:ui';
+import 'package:google_fonts/google_fonts.dart';
 
 const String apiUrl = "http://localhost:5000/api/books";
 
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'Bookeep',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        textTheme: GoogleFonts.nunitoTextTheme(Theme.of(context).textTheme),
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.deepOrange,
           brightness: Brightness.light,
@@ -35,6 +37,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
+
+
       home: const MyHomePage(title: 'Bookeep'),
     );
   }
@@ -62,6 +66,32 @@ String _formatNumberString(String input) {
   }
   return s;
 }
+
+Widget _totalsBox(String title, String value) {
+  return Expanded(
+    child: Container(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.orange),
+      ),
+      child: Column(
+        children: [
+          Text(title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 6),
+          Text(value,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        ],
+      ),
+    ),
+  );
+}
+
 
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _titleController = TextEditingController();
@@ -209,7 +239,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final totalBooks = _books.length;
+    final int totalWords = _books.fold(0, (sum, b) => sum + b.wordCount);
+    final int yearWords = _yearWordCount();
+    final int points = (yearWords / 10000).floor();
+    final int totalBooks = _books.length;
 
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
@@ -266,14 +299,20 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     child: Column(
                       children: [
-                        Text(
-                          "Books Read: $totalBooks",
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _totalsBox("Word Count (All)", _formatNumberString(totalWords.toString())),
+                            _totalsBox("Word Count (${DateTime.now().year})", _formatNumberString(yearWords.toString())),
+                          ],
                         ),
-                        const SizedBox(height: 5),
-                        Text(
-                          "Word Count This Year (${DateTime.now().year}): ${_formatNumberString(_yearWordCount().toString())}",
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        const SizedBox(height: 12),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _totalsBox("Books Read", totalBooks.toString()),
+                            _totalsBox("Points (${DateTime.now().year})", points.toString()),
+                          ],
                         ),
                       ],
                     ),
