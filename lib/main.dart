@@ -96,9 +96,11 @@ Widget _totalsBox(String title, String value) {
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _wordCountController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   DateTime? _selectedDate;
 
   List<Book> _books = [];
+  List<Book> _filteredBooks = [];
 
   @override
   void initState() {
@@ -114,13 +116,32 @@ class _MyHomePageState extends State<MyHomePage> {
           ..selection = TextSelection.collapsed(offset: formatted.length);
       }
     });
+
+    _searchController.addListener(() {
+      _filterBooks();
+    });
   }
 
   @override
   void dispose() {
     _titleController.dispose();
     _wordCountController.dispose();
+    _searchController.dispose();
     super.dispose();
+  }
+
+  void _filterBooks() {
+    setState(() {
+      if (_searchController.text.isEmpty) {
+        _filteredBooks = _books;
+      } else {
+        _filteredBooks = _books
+            .where((book) => book.title
+                .toLowerCase()
+                .contains(_searchController.text.toLowerCase()))
+            .toList();
+      }
+    });
   }
 
   Future<void> _fetchBooks() async {
@@ -130,6 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
         final List<dynamic> data = json.decode(resp.body);
         setState(() {
           _books = data.map((e) => Book.fromJson(e)).toList();
+          _filteredBooks = _books;
         });
       }
     } catch (e) {
@@ -241,7 +263,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final int totalWords = _books.fold(0, (sum, b) => sum + b.wordCount);
     final int yearWords = _yearWordCount();
-    final int points = (yearWords / 10000).floor();
+    final double points = yearWords / 10000.0;
     final int totalBooks = _books.length;
 
     return Scaffold(
@@ -311,7 +333,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             _totalsBox("Books Read", totalBooks.toString()),
-                            _totalsBox("Points (${DateTime.now().year})", points.toString()),
+                            _totalsBox("Points (${DateTime.now().year})", points.toStringAsFixed(2)),
                           ],
                         ),
                       ],
@@ -319,18 +341,31 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   const SizedBox(height: 25),
                   const Divider(),
-                  const Text("Books Entered",
+                  const Text("Book Shelf",
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 10),
+                  TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      labelText: "Search books",
+                      prefixIcon: const Icon(Icons.search),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
                   ListView.builder(
-                    itemCount: _books.length,
+                    itemCount: _filteredBooks.length,
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       return EditableBookTile(
-                        key: ValueKey(_books[index].id),
-                        book: _books[index],
+                        key: ValueKey(_filteredBooks[index].id),
+                        book: _filteredBooks[index],
                         onDelete: _deleteBook,
                         onSave: _updateBook,
                         onDatePick: (fn) => _pickDate(context, fn),
