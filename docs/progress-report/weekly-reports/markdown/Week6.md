@@ -6,7 +6,7 @@ title: Week 6 Progress Report
 ---
 
 # Sprint 2 – Week 6 Progress Report
-**Deadline:** 
+**Deadline: 11/2** 
 
 ---
 
