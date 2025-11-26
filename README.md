@@ -122,7 +122,7 @@ Download Your Reading Wrapped: With 2 clicks, download a review of your yearly r
 --- 
 
 Test:
-- Widget Testing: 13 Tests, All Pass (Check by Running `flutter run`)
+- Widget, Unit, Integration: 28 Tests, All Pass
 
 ---
 
