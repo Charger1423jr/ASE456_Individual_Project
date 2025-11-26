@@ -17,7 +17,7 @@ title: Week 10 Progress Report
 ---
 
 ## Progress Metrics
-LoC: 914
+LoC: 883
 Completed Goals: 1/1
 Burndown Rate: 100%
 
