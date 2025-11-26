@@ -77,16 +77,13 @@ Bookeep solves this problem by allowing users to:
 
 ### Backend
 1. Install Node.js and npm.
-2. Clone the repository:
-   ```bash
-   git clone <repo-url>
-   cd Bookeep
-Install dependencies:
-
-- bash
-- Copy code
+2. Install the Repo and un-zip the files
+Install dependencies for the server:
+1. Open Command Prompt and enter
 - npm install express mongoose cors body-parser
-- Configure MongoDB Atlas connection - Change in server.js
+
+2. Configure MongoDB Atlas connection - Change in server.js
+- Make a MongoDB Cluster and link the download link into the database from server.js
 
 Start the server:
 node server.js
@@ -102,6 +99,8 @@ Install dependencies:
 
 flutter pub get
 flutter run
+
+### If all was successful, the program should appear
 --- 
 ## How the Program Works
 Initialization: Fetches all books from the backend API.
@@ -117,6 +116,8 @@ Points are calculated by dividing yearly word counts by 10,000.
 UI Updates: All changes are reflected immediately in the interface.
 
 Data Persistence: Books are stored in MongoDB and synced via REST API.
+
+Download Your Reading Wrapped: With 2 clicks, download a review of your yearly reading
 
 --- 
 
@@ -214,3 +215,11 @@ Test:
 - LoC: 629
 - Completed Goals: 2/2
 - Issues: None
+
+### Sprint 2 - Week 10
+- Deadline: 11/30
+
+1. Bookeep Wrapped with downloadable function
+
+- LoC: 914
+- Completed Goals: 1/1
