@@ -83,39 +83,27 @@ Bookeep solves this problem by allowing users to:
    cd Bookeep
 Install dependencies:
 
-bash
-Copy code
-npm install
-Configure MongoDB Atlas connection:
-
-Replace MONGO_URI in your .env file or in server.js.
+- bash
+- Copy code
+- npm install express mongoose cors body-parser
+- Configure MongoDB Atlas connection - Change in server.js
 
 Start the server:
-
-bash
-Copy code
 node server.js
-Server runs at http://localhost:5000/api/books.
+
+---
 
 Frontend (Flutter)
 Install Flutter SDK and ensure environment is set up.
 
 Navigate to the Flutter project:
 
-bash
-Copy code
-cd Bookeep_flutter
 Install dependencies:
 
-bash
-Copy code
 flutter pub get
-Run the app:
-
-bash
-Copy code
 flutter run
-How the Program Works
+--- 
+## How the Program Works
 Initialization: Fetches all books from the backend API.
 
 Book Management: Users can add, edit, delete, and search books.
@@ -129,105 +117,93 @@ Points are calculated by dividing yearly word counts by 10,000.
 UI Updates: All changes are reflected immediately in the interface.
 
 Data Persistence: Books are stored in MongoDB and synced via REST API.
+--- 
+## Weekly Progress Reports
+### Sprint 1 – Week 1
+- Deadline: 9/28
 
-Weekly Progress Reports
-Sprint 1 – Week 1
-Deadline: 9/28
+1. Scaffold created for the project
+2. Basic UI designed
+3. Calculations for book tracking started
 
-Scaffold created for the project
+- LoC: 42
+- Completed Goals: 3/3
+- Issues: None
 
-Basic UI designed
+### Sprint 1 – Week 2
+- Deadline: 10/5
 
-Calculations for book tracking started
+1. Completed calculations
+2. Home page layout created
+3. Database for book storage created
 
-LoC: 42
+- LoC: 93
+- Completed Goals: 3/3
+- Issues: Database setup took longer than expected
 
-Completed Goals: 3/3
+### Sprint 1 – Week 3
+- Deadline: 10/12
 
-Issues: None
+1. Home page setup completed
+2. Calculations implemented onto homepage
 
-Sprint 1 – Week 2
-Deadline: 10/5
+- LoC: 133
+- Completed Goals: 2/2
+- Issues: None
 
-Completed calculations
+### Sprint 1 – Week 4
+- Deadline: 10/19
 
-Home page layout created
+1. UI font changes implemented
 
-Database for book storage created
+- LoC: 210
+- Completed Goals: 1/1
+- Issues: None
 
-LoC: 93
+### Sprint 1 – Week 5
+- Deadline: 10/26
 
-Completed Goals: 3/3
+1. Edit feature implemented
+2. Year tracking of books added
 
-Issues: Database setup took longer than expected
+- LoC: 345
+- Completed Goals: 2/2
+- Issues: None
 
-Sprint 1 – Week 3
-Deadline: 10/12
+### Sprint 2 – Week 6
+- Deadline: 11/2
 
-Home page setup completed
+1. Yearly book trackers implemented
+2. Delete feature added
 
-Calculations implemented onto homepage
+- LoC: 434
+- Completed Goals: 2/2
+- Issues: None
 
-LoC: 133
+### Sprint 2 – Week 7
+- Deadline: 11/9
 
-Completed Goals: 2/2
+1. UI colors updated
 
-Sprint 1 – Week 4
-Deadline: 10/19
+- LoC: 497
+- Completed Goals: 1/1
+- Issues: None
 
-UI font changes implemented
+### Sprint 2 – Week 8
+- Deadline: 11/16
 
-LoC: 210
+1. Word count formatting with commas implemented
 
-Completed Goals: 1/1
+- LoC: 542
+- Completed Goals: 1/1
+- Issues: None
 
-Sprint 1 – Week 5
-Deadline: 10/26
+### Sprint 2 – Week 9
+- Deadline: 11/23
 
-Edit feature implemented
+1. UI completed
+2. Points calculation formatted to 2 decimals
 
-Year tracking of books added
-
-LoC: 345
-
-Completed Goals: 2/2
-
-Sprint 2 – Week 6
-Deadline: 11/2
-
-Yearly book trackers implemented
-
-Delete feature added
-
-LoC: 434
-
-Completed Goals: 2/2
-
-Sprint 2 – Week 7
-Deadline: 11/9
-
-UI colors updated
-
-LoC: 497
-
-Completed Goals: 1/1
-
-Sprint 2 – Week 8
-Deadline: 11/16
-
-Word count formatting with commas implemented
-
-LoC: 542
-
-Completed Goals: 1/1
-
-Sprint 2 – Week 9
-Deadline: 11/23
-
-UI completed
-
-Points calculation formatted to 2 decimals
-
-LoC: 629
-
-Completed Goals: 2/2
+- LoC: 629
+- Completed Goals: 2/2
+- Issues: None
