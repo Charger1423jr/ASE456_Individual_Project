@@ -4,8 +4,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:ui' as ui;
 import 'package:google_fonts/google_fonts.dart';
-import 'dart:typed_data';
-import 'dart:html' as html;
 
 const String apiUrl = "http://localhost:5000/api/books";
 
@@ -435,43 +433,6 @@ class WrappedScreen extends StatefulWidget {
 
 class _WrappedScreenState extends State<WrappedScreen> {
   final GlobalKey _wrappedKey = GlobalKey();
-  bool _isDownloading = false;
-
-  Future<void> _downloadWrapped() async {
-    setState(() => _isDownloading = true);
-
-    try {
-      RenderRepaintBoundary boundary = _wrappedKey.currentContext!
-          .findRenderObject() as RenderRepaintBoundary;
-      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-      ByteData? byteData =
-          await image.toByteData(format: ui.ImageByteFormat.png);
-      Uint8List pngBytes = byteData!.buffer.asUint8List();
-
-      final blob = html.Blob([pngBytes]);
-      final url = html.Url.createObjectUrlFromBlob(blob);
-      final anchor = html.AnchorElement(href: url)
-        ..setAttribute('download', 'bookeep_wrapped_${widget.wrappedData['year']}.png')
-        ..click();
-      html.Url.revokeObjectUrl(url);
-
-      if (!mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Wrapped downloaded!')),
-      );
-    } catch (e) {
-      debugPrint("Download error: $e");
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
-    } finally {
-      if (mounted) {
-        setState(() => _isDownloading = false);
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -487,19 +448,22 @@ class _WrappedScreenState extends State<WrappedScreen> {
         backgroundColor: Colors.black,
         title: Text('$year Wrapped'),
         actions: [
-          if (_isDownloading)
-            const Center(
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: CircularProgressIndicator(color: Colors.white),
-              ),
-            )
-          else
-            IconButton(
-              icon: const Icon(Icons.download),
-              onPressed: _downloadWrapped,
-              tooltip: "Download PNG",
-            ),
+          IconButton(
+            icon: const Icon(Icons.screenshot),
+            onPressed: () {
+              // Note: Take a screenshot using your device's screenshot function
+              // Android: Power + Volume Down
+              // iOS: Side Button + Volume Up
+              // Desktop: Use your OS screenshot tool
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Use your device screenshot function to save this image'),
+                  duration: Duration(seconds: 3),
+                ),
+              );
+            },
+            tooltip: "Screenshot to Save",
+          ),
         ],
       ),
       body: Center(
