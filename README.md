@@ -13,8 +13,6 @@
 6. [Setup Instructions](#setup-instructions)  
 7. [How the Program Works](#how-the-program-works)  
 8. [Weekly Progress Reports](#weekly-progress-reports)  
-9. [Known Issues](#known-issues)  
-10. [Future Enhancements](#future-enhancements)  
 
 ---
 
