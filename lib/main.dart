@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:ui';
+import 'dart:ui' as ui;
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:typed_data';
+import 'dart:html' as html;
 
 const String apiUrl = "http://localhost:5000/api/books";
 
@@ -37,8 +40,6 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-
-
       home: const MyHomePage(title: 'Bookeep'),
     );
   }
@@ -91,7 +92,6 @@ Widget _totalsBox(String title, String value) {
     ),
   );
 }
-
 
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _titleController = TextEditingController();
@@ -259,6 +259,39 @@ class _MyHomePageState extends State<MyHomePage> {
         .fold(0, (sum, b) => sum + b.wordCount);
   }
 
+  void _showWrapped() async {
+    final currentYear = DateTime.now().year;
+    
+    try {
+      final resp = await http.get(
+        Uri.parse("http://localhost:5000/api/wrapped/$currentYear")
+      );
+      
+      if (resp.statusCode == 200) {
+        final data = json.decode(resp.body);
+        if (!mounted) return;
+        
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => WrappedScreen(wrappedData: data),
+          ),
+        );
+      } else {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Error loading wrapped data')),
+        );
+      }
+    } catch (e) {
+      debugPrint("Wrapped error: $e");
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Network error loading wrapped')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final int totalWords = _books.fold(0, (sum, b) => sum + b.wordCount);
@@ -267,7 +300,16 @@ class _MyHomePageState extends State<MyHomePage> {
     final int totalBooks = _books.length;
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.auto_awesome),
+            onPressed: _showWrapped,
+            tooltip: "My ${DateTime.now().year} Wrapped",
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -382,6 +424,226 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+class WrappedScreen extends StatefulWidget {
+  final Map<String, dynamic> wrappedData;
+
+  const WrappedScreen({super.key, required this.wrappedData});
+
+  @override
+  State<WrappedScreen> createState() => _WrappedScreenState();
+}
+
+class _WrappedScreenState extends State<WrappedScreen> {
+  final GlobalKey _wrappedKey = GlobalKey();
+  bool _isDownloading = false;
+
+  Future<void> _downloadWrapped() async {
+    setState(() => _isDownloading = true);
+
+    try {
+      RenderRepaintBoundary boundary = _wrappedKey.currentContext!
+          .findRenderObject() as RenderRepaintBoundary;
+      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+      ByteData? byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
+      Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+      final blob = html.Blob([pngBytes]);
+      final url = html.Url.createObjectUrlFromBlob(blob);
+      final anchor = html.AnchorElement(href: url)
+        ..setAttribute('download', 'bookeep_wrapped_${widget.wrappedData['year']}.png')
+        ..click();
+      html.Url.revokeObjectUrl(url);
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Wrapped downloaded!')),
+      );
+    } catch (e) {
+      debugPrint("Download error: $e");
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isDownloading = false);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final year = widget.wrappedData['year'];
+    final totalBooks = widget.wrappedData['totalBooks'];
+    final totalWords = widget.wrappedData['totalWords'];
+    final points = widget.wrappedData['points'];
+    final topBooks = widget.wrappedData['topBooks'] as List<dynamic>;
+
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: Text('$year Wrapped'),
+        actions: [
+          if (_isDownloading)
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: CircularProgressIndicator(color: Colors.white),
+              ),
+            )
+          else
+            IconButton(
+              icon: const Icon(Icons.download),
+              onPressed: _downloadWrapped,
+              tooltip: "Download PNG",
+            ),
+        ],
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: RepaintBoundary(
+              key: _wrappedKey,
+              child: Container(
+                width: 400,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color(0xFF1E3A8A),
+                      Color(0xFF7C3AED),
+                      Color(0xFFDB2777),
+                      Color(0xFFF59E0B),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                padding: const EdgeInsets.all(32),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.auto_awesome,
+                        color: Colors.white, size: 50),
+                    const SizedBox(height: 16),
+                    Text(
+                      '$year',
+                      style: GoogleFonts.montserrat(
+                        fontSize: 48,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      'WRAPPED',
+                      style: GoogleFonts.montserrat(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white70,
+                        letterSpacing: 4,
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    _wrappedStat('Books Read', totalBooks.toString()),
+                    const SizedBox(height: 24),
+                    _wrappedStat(
+                        'Total Words', _formatNumberString(totalWords.toString())),
+                    const SizedBox(height: 24),
+                    _wrappedStat('Points Earned', points.toString()),
+                    const SizedBox(height: 40),
+                    if (topBooks.isNotEmpty) ...[
+                      Text(
+                        'TOP READS',
+                        style: GoogleFonts.montserrat(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      ...topBooks.take(3).map((book) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    book['title'],
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    '${_formatNumberString(book['wordCount'].toString())} words',
+                                    style: const TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )),
+                    ],
+                    const SizedBox(height: 40),
+                    Text(
+                      '📚 Bookeep',
+                      style: GoogleFonts.nunito(
+                        fontSize: 18,
+                        color: Colors.white70,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _wrappedStat(String label, String value) {
+    return Column(
+      children: [
+        Text(
+          label.toUpperCase(),
+          style: GoogleFonts.montserrat(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Colors.white70,
+            letterSpacing: 2,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          value,
+          style: GoogleFonts.montserrat(
+            fontSize: 40,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class EditableBookTile extends StatefulWidget {
   final Book book;
   final Function(Book) onSave;
@@ -437,7 +699,7 @@ class _EditableBookTileState extends State<EditableBookTile> {
       barrierDismissible: false,
       builder: (_) {
         return BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+          filter: ui.ImageFilter.blur(sigmaX: 6, sigmaY: 6),
           child: AlertDialog(
             title: const Text("Delete Book?"),
             content: Text("Are you sure you want to delete '${widget.book.title}'?"),
