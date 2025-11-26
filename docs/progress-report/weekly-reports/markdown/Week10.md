@@ -12,7 +12,7 @@ title: Week 10 Progress Report
 ---
 
 ## Sprint 2 Goals - Week 10
-1. Bookeep Wrapped with downloadable png
+1. Bookeep Wrapped with Screenshot Page
 
 ---
 
