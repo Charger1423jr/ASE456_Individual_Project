@@ -117,7 +117,14 @@ Points are calculated by dividing yearly word counts by 10,000.
 UI Updates: All changes are reflected immediately in the interface.
 
 Data Persistence: Books are stored in MongoDB and synced via REST API.
+
 --- 
+
+Test:
+- Widget Testing: 13 Tests, All Pass (Check by Running `flutter run`)
+
+---
+
 ## Weekly Progress Reports
 ### Sprint 1 – Week 1
 - Deadline: 9/28
