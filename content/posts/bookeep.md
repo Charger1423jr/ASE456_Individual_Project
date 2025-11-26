@@ -1,7 +1,11 @@
 ---
 title: "Bookeep - ASE456 Individual Project"
-date: 2025-11-26
+date: 2024-11-23
 draft: false
+description: "A multi-platform application designed to track books read by users, compute statistics, and visualize progress over time."
+tags: ["flutter", "nodejs", "mongodb", "book-tracking", "reading"]
+categories: ["projects"]
+author: "Preston Jackson"
 ---
 
 # Bookeep - ASE456 Individual Project
