@@ -2,13 +2,7 @@
 title: "Bookeep - ASE456 Individual Project"
 date: 2024-11-23
 draft: false
-description: "A multi-platform application designed to track books read by users, compute statistics, and visualize progress over time."
-tags: ["flutter", "nodejs", "mongodb", "book-tracking", "reading"]
-categories: ["projects"]
-author: "Preston Jackson"
 ---
-
-# Bookeep - ASE456 Individual Project
 
 **Bookeep** is a multi-platform application designed to track books read by users, compute statistics, and visualize progress over time. It is intended for personal or competitive reading tracking, making it easier to log books, calculate points, and manage reading data efficiently.
 
@@ -91,3 +85,175 @@ Bookeep solves this problem by allowing users to:
    ```bash
    git clone <repo-url>
    cd Bookeep
+   ```
+3. Install dependencies:
+   ```bash
+   npm install express mongoose cors body-parser
+   ```
+4. Configure MongoDB Atlas connection - Change in server.js
+5. Start the server:
+   ```bash
+   node server.js
+   ```
+
+---
+
+### Frontend (Flutter)
+1. Install Flutter SDK and ensure environment is set up.
+2. Navigate to the Flutter project:
+   ```bash
+   cd bookeep_flutter
+   ```
+3. Install dependencies:
+   ```bash
+   flutter pub get
+   ```
+4. Run the application:
+   ```bash
+   flutter run
+   ```
+
+--- 
+
+## How the Program Works
+- **Initialization:** Fetches all books from the backend API.
+- **Book Management:** Users can add, edit, delete, and search books.
+- **Statistics Calculation:**
+  - All-time and yearly word counts are computed.
+  - Points are calculated by dividing yearly word counts by 10,000.
+- **UI Updates:** All changes are reflected immediately in the interface.
+- **Data Persistence:** Books are stored in MongoDB and synced via REST API.
+
+--- 
+
+### Testing
+- **Widget Testing:** 13 Tests, All Pass (Check by Running `flutter test`)
+
+---
+
+## Weekly Progress Reports
+
+### Sprint 1 – Week 1
+**Deadline:** 9/28
+
+**Completed Tasks:**
+1. Scaffold created for the project
+2. Basic UI designed
+3. Calculations for book tracking started
+
+**Metrics:**
+- LoC: 42
+- Completed Goals: 3/3
+- Issues: None
+
+---
+
+### Sprint 1 – Week 2
+**Deadline:** 10/5
+
+**Completed Tasks:**
+1. Completed calculations
+2. Home page layout created
+3. Database for book storage created
+
+**Metrics:**
+- LoC: 93
+- Completed Goals: 3/3
+- Issues: Database setup took longer than expected
+
+---
+
+### Sprint 1 – Week 3
+**Deadline:** 10/12
+
+**Completed Tasks:**
+1. Home page setup completed
+2. Calculations implemented onto homepage
+
+**Metrics:**
+- LoC: 133
+- Completed Goals: 2/2
+- Issues: None
+
+---
+
+### Sprint 1 – Week 4
+**Deadline:** 10/19
+
+**Completed Tasks:**
+1. UI font changes implemented
+
+**Metrics:**
+- LoC: 210
+- Completed Goals: 1/1
+- Issues: None
+
+---
+
+### Sprint 1 – Week 5
+**Deadline:** 10/26
+
+**Completed Tasks:**
+1. Edit feature implemented
+2. Year tracking of books added
+
+**Metrics:**
+- LoC: 345
+- Completed Goals: 2/2
+- Issues: None
+
+---
+
+### Sprint 2 – Week 6
+**Deadline:** 11/2
+
+**Completed Tasks:**
+1. Yearly book trackers implemented
+2. Delete feature added
+
+**Metrics:**
+- LoC: 434
+- Completed Goals: 2/2
+- Issues: None
+
+---
+
+### Sprint 2 – Week 7
+**Deadline:** 11/9
+
+**Completed Tasks:**
+1. UI colors updated
+
+**Metrics:**
+- LoC: 497
+- Completed Goals: 1/1
+- Issues: None
+
+---
+
+### Sprint 2 – Week 8
+**Deadline:** 11/16
+
+**Completed Tasks:**
+1. Word count formatting with commas implemented
+
+**Metrics:**
+- LoC: 542
+- Completed Goals: 1/1
+- Issues: None
+
+---
+
+### Sprint 2 – Week 9
+**Deadline:** 11/23
+
+**Completed Tasks:**
+1. UI completed
+2. Points calculation formatted to 2 decimals
+
+**Metrics:**
+- LoC: 629
+- Completed Goals: 2/2
+- Issues: None
+
+---
