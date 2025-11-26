@@ -7,7 +7,6 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// Connect to MongoDB (remove deprecated options)
 mongoose.connect(
   "mongodb+srv://Charger1423:Password123@bookeepdata.2hv2ytt.mongodb.net/?retryWrites=true&w=majority&appName=BookeepData"
 )
@@ -40,6 +39,48 @@ app.get("/api/books", async (req, res) => {
   try {
     const books = await Book.find();
     res.json(books);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/api/wrapped/:year", async (req, res) => {
+  try {
+    const year = parseInt(req.params.year);
+    const books = await Book.find();
+    
+    const yearBooks = books.filter(book => {
+      try {
+        const parts = book.dateRead.split("-");
+        if (parts.length === 3) {
+          const bookYear = parseInt(parts[2]);
+          return bookYear === year;
+        }
+        return false;
+      } catch {
+        return false;
+      }
+    });
+
+    const totalBooks = yearBooks.length;
+    const totalWords = yearBooks.reduce((sum, book) => sum + (book.wordCount || 0), 0);
+    const points = totalWords / 10000;
+    
+    const topBooks = yearBooks
+      .sort((a, b) => b.wordCount - a.wordCount)
+      .slice(0, 5)
+      .map(book => ({
+        title: book.title,
+        wordCount: book.wordCount
+      }));
+
+    res.json({
+      year,
+      totalBooks,
+      totalWords,
+      points: parseFloat(points.toFixed(2)),
+      topBooks
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
