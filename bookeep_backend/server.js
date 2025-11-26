@@ -7,10 +7,12 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-mongoose.connect("mongodb+srv://Charger1423:Password123@bookeepdata.2hv2ytt.mongodb.net/?retryWrites=true&w=majority&appName=BookeepData", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+// Connect to MongoDB (remove deprecated options)
+mongoose.connect(
+  "mongodb+srv://Charger1423:Password123@bookeepdata.2hv2ytt.mongodb.net/?retryWrites=true&w=majority&appName=BookeepData"
+)
+.then(() => console.log("MongoDB connected successfully!"))
+.catch(err => console.error("MongoDB connection error:", err));
 
 const bookSchema = new mongoose.Schema({
   title: String,
@@ -33,7 +35,6 @@ app.post("/api/books", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
 
 app.get("/api/books", async (req, res) => {
   try {
@@ -79,6 +80,5 @@ app.delete("/api/books/:id", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
 
 app.listen(5000, () => console.log("Server running on port 5000"));
