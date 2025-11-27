@@ -257,3 +257,17 @@ Bookeep solves this problem by allowing users to:
 - Issues: None
 
 ---
+
+### Sprint 2 – Week 9
+**Deadline:** 11/23
+
+**Completed Tasks:**
+1. Wrapped Feature with Screenshot Page
+2. Points calculation formatted to 2 decimals
+
+**Metrics:**
+- LoC: 883
+- Completed Goals: 1/1
+- Issues: Initially wanted to have it download a png, but complications with testing and dependencies had be restructure this feature.
+
+---
