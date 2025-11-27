@@ -8,7 +8,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 mongoose.connect(
-  "mongodb+srv://Charger1423:Password123@bookeepdata.2hv2ytt.mongodb.net/?retryWrites=true&w=majority&appName=BookeepData"
+  // Enter Your MongoDB Database Here
 )
 .then(() => console.log("MongoDB connected successfully!"))
 .catch(err => console.error("MongoDB connection error:", err));
