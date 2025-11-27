@@ -22,3 +22,6 @@ Completed Goals: 1/1
 Burndown Rate: 100%
 
 ---
+
+## Issues
+- Initially was going to download a png, but testing and dependency issues caused this feature to be retructured.
