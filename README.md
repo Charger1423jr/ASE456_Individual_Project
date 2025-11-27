@@ -222,3 +222,4 @@ Test:
 
 - LoC: 883
 - Completed Goals: 1/1
+- Issues: Initially was going to download a png but testing and dependency issues caused the feature to be restructured.
